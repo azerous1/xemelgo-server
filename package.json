@@ -1,0 +1,21 @@
+{
+  "name": "xemelgo-server",
+  "version": "1.0.0",
+  "description": "server for xemelgo's take home project",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb-memory-server": "^8.10.2",
+    "mongoose": "^6.8.1",
+    "mongoose-sequence": "^5.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
