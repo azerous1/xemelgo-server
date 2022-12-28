@@ -9,7 +9,8 @@ docker network rm xemelgo-proj
 docker network create xemelgo-proj
 
 docker run -d \
-    -p 80:80 \
+    -p 443:443 \
+    -v /etc/letsencrypt:/etc/letsencrypt:ro \
     --name server_ \
     --network xemelgo-proj \
     yichiz5/xemelgo-server

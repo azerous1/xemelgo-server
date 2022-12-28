@@ -56,26 +56,23 @@ const postItemHandler = async (
   newItem._id = itemId;
 
   const newItemEntry = new itemTableModel(newItem);
-
   try {
-    newItemEntry.save();
-
+    await newItemEntry.save();
     // update location history table
     const newLocationHistoryEntryId = new mongoose.Types.ObjectId();
     const newLocationHistoryEntryObj = {
       _id: newLocationHistoryEntryId,
+      itemId: itemId,
       location: req.body.location,
     };
 
     const newLocationEntry = new locationTableModel(newLocationHistoryEntryObj);
-    newLocationEntry.save();
+    await newLocationEntry.save();
 
-    console.log(newLocationHistoryEntryId);
     // update location entry to item 'locationHistory' field
     itemTableModel.findByIdAndUpdate(
       itemId,
       { $push: { locationHistory: newLocationHistoryEntryId } },
-      { location: req.body.location },
       (err, doc) => {
         console.log(doc);
       }
@@ -100,6 +97,7 @@ const updateItemLocationHandler = async (
 ) => {
   const payload = JSON.parse(req.body.data);
   const { itemId } = payload;
+  console.log("item id: ", itemId)
   const newLocationEntry = {
     location: payload.location,
     timestamp: payload.timestamp,
@@ -108,7 +106,7 @@ const updateItemLocationHandler = async (
   newLocationEntry._id = newId;
 
   const query = new locationTableModel(newLocationEntry);
-  query.save((err, response) => {
+  await query.save((err, response) => {
     if (err) {
       console.log(err);
       res.status(500).send("Error in saving data to DB");
@@ -120,8 +118,7 @@ const updateItemLocationHandler = async (
   // // update newly inserted entry id to item table.
   itemTableModel.findByIdAndUpdate(
     itemId,
-    { $push: { locationHistory: newId } },
-    { location: payload.location },
+    { $push: { locationHistory: newId }, location: payload.location  },
     (err, doc) => {
       if (err) {
         console.log(err);
@@ -150,7 +147,7 @@ const updateItemActionHistoryHandler = async (
   newActionEntry._id = newId;
 
   const query = new actionTableModel(newActionEntry);
-  query.save((err, response) => {
+  await query.save((err, response) => {
     if (err) {
       console.log(err);
       res.status(500).send("Error in saving data to DB");

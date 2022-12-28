@@ -1,5 +1,7 @@
 const schemas = require("./db/schema");
 const { connect, mongoose } = require("./db/index");
+const fs = require('fs');
+const https = require('https');
 
 const {
   getAllItemHandler,
@@ -9,13 +11,24 @@ const {
   updateItemLocationHandler,
   updateItemActionHistoryHandler,
 } = require("./handlers");
+
 const express = require("express");
-const TEST_PORT = 81;
-const PORT = 80;
+const HTTPS_PORT = 443;
+const HTTP_PORT = 80;
+const TESTING_PORT = 80;
 const CORS_HEADER = "Access-Control-Allow-Origin";
 const CORS_TARGET = "*";
 const CONTENT_HEADER = "Access-Control-Allow-Headers";
 const HEADER = "Content-Type, Authorization";
+
+// const privateKey  = fs.readFileSync('/etc/letsencrypt/live/xemelgo-server.yichi-zhang.com/privkey.pem', 'utf8');
+// const certificate = fs.readFileSync('/etc/letsencrypt/live/xemelgo-server.yichi-zhang.com/fullchain.pem', 'utf8');
+
+// const httpsCredentials = {
+//   key: privateKey,
+//   cert: certificate
+// }
+
 const app = express();
 
 const itemTableModel = mongoose.model("Item", schemas.Item);
@@ -88,12 +101,25 @@ app.post(
   )
 );
 
-app.listen(PORT, () => {
+app.listen(TESTING_PORT, () => {
   connect();
   mongoose.connection
     .on("error", console.error)
     .on("disconnected", connect)
     .once("open", () => {
-      console.log(`server is running at port ${PORT}`);
+      console.log(`server is running at port ${TESTING_PORT}`);
     });
-});
+})
+
+// const httpsServer = https.createServer(httpsCredentials, app)
+
+// httpsServer.listen(HTTPS_PORT, () => {
+//   connect();
+//   mongoose.connection
+//     .on("error", console.error)
+//     .on("disconnected", connect)
+//     .once("open", () => {
+//       console.log(`server is running at port ${HTTPS_PORT}`);
+//     });
+// });
+

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 const mongoEndPoint = "mongodb://xemelgo-db:27017/xemelgo-db?directConnection=true";
-const TESTING = false;
+const TESTING = true;
 
 const connect = async () => {
   if (TESTING) {
