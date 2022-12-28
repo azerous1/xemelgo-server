@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const getAllItemHandler = async (req, res, itemTableModel) => {
   try {
     const items = await itemTableModel.find({});
-    console.log("here");
     res.status(200).send(items);
   } catch (err) {
     res.status(500).send("Error in fetching items");

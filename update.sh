@@ -1,21 +1,25 @@
-docker pull yichiz5/searec
+docker pull yichiz5/xemelgo-server
 
-docker rm -f searec
+# remove exisitng instance
+docker rm -f server_
 
-docker network create network498
+docker network rm xemelgo-proj
+
+# create a network
+docker network create xemelgo-proj
 
 docker run -d \
     -p 80:80 \
-    --name searec \
-    --network network498 \
-    yichiz5/searec
+    --name server_ \
+    --network xemelgo-proj \
+    yichiz5/xemelgo-server
+
 
 #optionally re-deploy database and delete all data
-
-docker rm -f mongoDB
+docker rm -f xemelgo-db
 
 docker run -d \
-    -p 21017:21017 \
-    --name mongoDB \
-    --network network498 \
+    -p 27017:27017 \
+    --name xemelgo-db \
+    --network xemelgo-proj \
     mongo

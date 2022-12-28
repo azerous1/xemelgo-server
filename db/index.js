@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
-const mongoEndPoint = "mongodb://mongoDB:27017/searecDB";
-const TESTING = true;
+const mongoEndPoint = "mongodb://xemelgo-db:27017/xemelgo-db?directConnection=true";
+const TESTING = false;
 
 const connect = async () => {
   if (TESTING) {
@@ -18,12 +18,11 @@ const connect = async () => {
     await mongoose
       .connect(mongoEndPoint, {
         useNewUrlParser: true,
-        useCreateIndex: true,
         useUnifiedTopology: true,
       })
       .then(() => console.log("Now connected to MongoDB!"))
       .catch((err) =>
-        console.error("Something went wrong when connecting to the db", err)
+        console.error("Something went wrong when connecting to the db: ", err)
       );
   }
 };
